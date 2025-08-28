@@ -1,3 +1,4 @@
+
 'use client';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -6,15 +7,49 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Camera, User } from 'lucide-react';
 import { useState, useRef } from 'react';
+import { auth } from '@/lib/firebase';
+import { updateProfile } from 'firebase/auth';
+import { useToast } from '@/hooks/use-toast';
+import { useRouter } from 'next/navigation';
 
 export default function CreateProfilePage() {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [fullName, setFullName] = useState('');
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const { toast } = useToast();
+  const router = useRouter();
   
-  const handleSave = () => {
-    // Here you would typically save the profile data
-    // For now, we'll just navigate to the home page
-    window.location.href = '/';
+  const handleSave = async () => {
+    const user = auth.currentUser;
+    if (!user) {
+      toast({
+        variant: 'destructive',
+        title: 'Not Authenticated',
+        description: 'You must be logged in to create a profile.',
+      });
+      router.push('/login');
+      return;
+    }
+
+    try {
+      await updateProfile(user, {
+        displayName: fullName,
+        // photoURL: '...' // TODO: Add photo upload logic here
+      });
+
+      toast({
+        title: 'Profile Saved',
+        description: 'Your profile has been updated successfully.',
+      });
+
+      router.push('/');
+    } catch (error: any) {
+      toast({
+        variant: 'destructive',
+        title: 'Uh oh! Something went wrong.',
+        description: error.message,
+      });
+    }
   };
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -65,7 +100,7 @@ export default function CreateProfilePage() {
       <form onSubmit={(e) => { e.preventDefault(); handleSave(); }} className="space-y-6 mt-8">
           <div className="space-y-2">
             <Label htmlFor="fullname" className="sr-only">Full Name</Label>
-            <Input id="fullname" placeholder="Full Name" className="h-12 bg-muted/50 border-0" />
+            <Input id="fullname" placeholder="Full Name" className="h-12 bg-muted/50 border-0" value={fullName} onChange={(e) => setFullName(e.target.value)} required />
           </div>
           <div className="space-y-2">
             <Label htmlFor="mobile" className="sr-only">Mobile Number</Label>
