@@ -1,3 +1,4 @@
+
 'use client';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -52,7 +53,8 @@ export default function OnboardingPage() {
   const { image, title, description } = onboardingSlides[currentSlide];
 
   return (
-    <div className="flex flex-col h-screen bg-[#FAF8F1]">
+    <div className="flex flex-col h-screen bg-[#FAF8F1] relative">
+       <Button variant="link" className="absolute top-4 right-4 z-10 text-muted-foreground" onClick={handleSkip}>Skip</Button>
       <div className="flex-1 flex flex-col items-center justify-center text-center px-6">
         <div className="relative w-full max-w-sm aspect-[4/3] mb-8">
             <Image
@@ -80,9 +82,8 @@ export default function OnboardingPage() {
             />
           ))}
         </div>
-        <div className="flex justify-between items-center gap-4">
-            <Button variant="ghost" className="w-1/2 bg-gray-200 hover:bg-gray-300 text-black" size="lg" onClick={handleSkip}>Skip</Button>
-            <Button size="lg" className="w-1/2 bg-[#FDBA43] text-black hover:bg-yellow-400" onClick={handleNext}>
+        <div className="flex justify-center items-center gap-4">
+            <Button size="lg" className="w-full max-w-xs bg-[#FDBA43] text-black hover:bg-yellow-400" onClick={handleNext}>
                 {currentSlide === onboardingSlides.length - 1 ? 'Get Started' : 'Next'}
             </Button>
         </div>
