@@ -4,18 +4,17 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Camera, ArrowLeft, User } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import { Camera, User } from 'lucide-react';
 import { useState, useRef } from 'react';
 
 export default function CreateProfilePage() {
-  const router = useRouter();
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   
   const handleSave = () => {
     // Here you would typically save the profile data
-    router.push('/');
+    // For now, we'll just navigate to the home page
+    window.location.href = '/';
   };
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -35,13 +34,6 @@ export default function CreateProfilePage() {
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-md bg-background">
-        <div className="relative flex items-center justify-center mb-6">
-            <Button variant="ghost" size="icon" className="absolute left-0" onClick={() => router.back()}>
-                <ArrowLeft />
-            </Button>
-            <h1 className="text-xl font-bold">Profile</h1>
-        </div>
-
       <div className="flex flex-col items-center text-center space-y-4">
         <div className="relative">
           <Avatar className="h-28 w-28 border-2 border-primary/50">
