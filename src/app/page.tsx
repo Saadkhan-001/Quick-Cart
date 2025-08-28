@@ -1,3 +1,5 @@
+'use client';
+import { useState } from 'react';
 import { ProductGrid } from '@/components/product-grid';
 import { products } from '@/lib/products';
 import { Input } from '@/components/ui/input';
@@ -5,17 +7,79 @@ import { Button } from '@/components/ui/button';
 import { MapPin, Search } from 'lucide-react';
 import Image from 'next/image';
 import { Separator } from '@/components/ui/separator';
+import { useToast } from '@/hooks/use-toast';
+
 
 export default function Home() {
+  const [address, setAddress] = useState('123 Main St...');
+  const { toast } = useToast();
+
+  const handleLocationClick = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          try {
+            // Using a free, no-key reverse geocoding service for demonstration
+            const response = await fetch(
+              `https://nominatim.openstreetmap.org/reverse?format=json&lat=${position.coords.latitude}&lon=${position.coords.longitude}`
+            );
+            const data = await response.json();
+            if (data && data.display_name) {
+              setAddress(data.display_name);
+              toast({
+                title: 'Location Updated',
+                description: 'Your delivery address has been set.',
+              });
+            } else {
+              setAddress('Address not found');
+            }
+          } catch (error) {
+            console.error('Error fetching address:', error);
+            toast({
+              variant: 'destructive',
+              title: 'Error',
+              description: 'Could not fetch your address.',
+            });
+            setAddress('Could not fetch address');
+          }
+        },
+        (error) => {
+          console.error('Geolocation error:', error);
+          let description = 'An unknown error occurred.';
+          if (error.code === error.PERMISSION_DENIED) {
+            description = 'Please allow location access to use this feature.';
+          } else if (error.code === error.POSITION_UNAVAILABLE) {
+            description = 'Location information is unavailable.';
+          } else if (error.code === error.TIMEOUT) {
+            description = 'The request to get user location timed out.';
+          }
+          toast({
+            variant: 'destructive',
+            title: 'Location Error',
+            description,
+          });
+        }
+      );
+    } else {
+      toast({
+        variant: 'destructive',
+        title: 'Unsupported',
+        description: 'Geolocation is not supported by this browser.',
+      });
+    }
+  };
+
   return (
     <div className="flex flex-col">
       <div className="container mx-auto px-4 py-6 space-y-6">
         <div className="flex items-center justify-between">
             <div>
                 <p className="text-sm text-muted-foreground">Delivery to</p>
-                <span className="font-semibold">123 Main St...</span>
+                <span className="font-semibold truncate pr-2">{address}</span>
             </div>
-            <MapPin className="h-6 w-6 text-foreground" />
+            <Button variant="ghost" size="icon" onClick={handleLocationClick} aria-label="Get current location">
+              <MapPin className="h-6 w-6 text-foreground" />
+            </Button>
         </div>
         <div className="relative">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
