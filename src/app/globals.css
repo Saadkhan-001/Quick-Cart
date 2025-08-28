@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 body {
-  font-family: 'Inter', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro", "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
 }
 
 @layer base {

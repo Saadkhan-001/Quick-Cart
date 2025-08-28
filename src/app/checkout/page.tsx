@@ -120,20 +120,20 @@ export default function CheckoutPage() {
                     <div className="space-y-2 text-muted-foreground">
                         <div className="flex justify-between">
                             <p>Subtotal</p>
-                            <p className="font-medium text-foreground">${cartTotal.toFixed(2)}</p>
+                            <p className="font-medium text-foreground">PKR{cartTotal.toFixed(2)}</p>
                         </div>
                          <div className="flex justify-between">
                             <p>Delivery Fee</p>
-                            <p className="font-medium text-foreground">${deliveryFee.toFixed(2)}</p>
+                            <p className="font-medium text-foreground">PKR{deliveryFee.toFixed(2)}</p>
                         </div>
                          <div className="flex justify-between">
                             <p>Taxes</p>
-                            <p className="font-medium text-foreground">${taxes.toFixed(2)}</p>
+                            <p className="font-medium text-foreground">PKR{taxes.toFixed(2)}</p>
                         </div>
                         <Separator />
                         <div className="flex justify-between font-bold text-xl text-foreground">
                             <p>Total</p>
-                            <p>${total.toFixed(2)}</p>
+                            <p>PKR{total.toFixed(2)}</p>
                         </div>
                     </div>
                      <Button size="lg" className="w-full bg-primary text-primary-foreground h-14 rounded-full text-lg font-bold" onClick={handleConfirmAndPay}>

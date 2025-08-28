@@ -79,7 +79,7 @@ export default function OrdersHistoryPage() {
                   </div>
                   <div className="flex-1">
                     <h3 className="font-bold text-lg">Order #{order.id}</h3>
-                    <p className="text-muted-foreground">Total: ${order.total.toFixed(2)}</p>
+                    <p className="text-muted-foreground">Total: PKR{order.total.toFixed(2)}</p>
                     <p className="text-muted-foreground">{order.status} · {order.itemCount} items</p>
                   </div>
                   <div className="flex items-center gap-2">

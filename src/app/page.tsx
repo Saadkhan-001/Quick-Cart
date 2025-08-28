@@ -243,7 +243,7 @@ export default function Home() {
                 <div>
                     <h2 className="text-white text-3xl md:text-5xl font-bold tracking-tighter">THE NATURAL STORY</h2>
                     <p className="text-green-200 text-sm mt-2 max-w-md">FRESH VEGETABLES OF WORK</p>
-                    <p className="text-white font-bold text-xl mt-4">$81.45</p>
+                    <p className="text-white font-bold text-xl mt-4">PKR81.45</p>
                 </div>
             </div>
         </div>

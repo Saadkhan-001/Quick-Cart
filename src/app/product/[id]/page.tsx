@@ -86,9 +86,9 @@ export default function ProductDetailsPage() {
 
         <div className="flex justify-between items-center">
             <div className="flex items-baseline gap-2">
-                <span className="text-3xl font-bold">${(product.price * (1 - (product.discount || 0))).toFixed(2)}</span>
+                <span className="text-3xl font-bold">PKR{(product.price * (1 - (product.discount || 0))).toFixed(2)}</span>
                 {product.discount && (
-                <span className="text-lg text-muted-foreground line-through">${product.price.toFixed(2)}</span>
+                <span className="text-lg text-muted-foreground line-through">PKR{product.price.toFixed(2)}</span>
                 )}
             </div>
 
