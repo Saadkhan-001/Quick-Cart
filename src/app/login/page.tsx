@@ -2,7 +2,6 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { auth } from '@/lib/firebase';
 import { 
   createUserWithEmailAndPassword, 
@@ -12,7 +11,6 @@ import {
 } from 'firebase/auth';
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
-import { cn } from '@/lib/utils';
 
 export default function LoginPage() {
   const [isSignUp, setIsSignUp] = useState(false);
@@ -74,13 +72,13 @@ export default function LoginPage() {
         </div>
 
         <div className="w-full max-w-sm mx-auto">
-            <h2 className="text-3xl font-bold mb-6 text-left">Sign in or create an account</h2>
+            <h2 className="text-3xl font-bold mb-6 text-left">{isSignUp ? 'Create an account' : 'Sign in'}</h2>
             <form onSubmit={handleAuthAction} className="space-y-4">
                 <div className="space-y-2">
                 <Input 
                     id="email" 
                     type="email" 
-                    placeholder="Email or phone" 
+                    placeholder="Email" 
                     required 
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
@@ -99,7 +97,7 @@ export default function LoginPage() {
                 />
                 </div>
                 <Button type="submit" size="lg" className="w-full bg-[#FDBA43] text-black hover:bg-[#FDBA43]/90 h-12 rounded-lg">
-                 {isSignUp ? 'Sign Up' : 'Sign In'}
+                 {isSignUp ? 'Create Account' : 'Continue'}
                 </Button>
             </form>
 
@@ -108,7 +106,7 @@ export default function LoginPage() {
                 <span className="w-full border-t" />
                 </div>
                 <div className="relative flex justify-center text-xs">
-                <span className="bg-[#FAF8F1] px-2 text-muted-foreground">Or continue with</span>
+                <span className="bg-[#FAF8F1] px-2 text-muted-foreground">or</span>
                 </div>
             </div>
 
@@ -118,32 +116,14 @@ export default function LoginPage() {
                 </svg>
                 Continue with Google
             </Button>
+
+             <div className="mt-6 text-center text-sm">
+                <button onClick={() => setIsSignUp(!isSignUp)} className="text-primary hover:underline">
+                    {isSignUp ? "Already have an account? Sign in" : "Don't have an account? Sign up"}
+                </button>
+            </div>
         </div>
       </div>
-      <div className="flex justify-center items-center gap-4 pb-4">
-            <Button 
-                variant="ghost" 
-                size="lg" 
-                onClick={() => setIsSignUp(true)} 
-                className={cn(
-                    "w-auto px-6", 
-                    isSignUp ? "bg-[#D8C6A2] text-black rounded-lg" : "bg-transparent text-muted-foreground"
-                )}
-            >
-                Sign up
-            </Button>
-            <Button 
-                variant="ghost" 
-                size="lg" 
-                onClick={() => setIsSignUp(false)}
-                className={cn(
-                    "w-auto px-6", 
-                    !isSignUp ? "bg-[#D8C6A2] text-black rounded-lg" : "bg-transparent text-muted-foreground"
-                )}
-            >
-                Sign In
-            </Button>
-        </div>
     </div>
   );
 }
