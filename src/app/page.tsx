@@ -14,6 +14,7 @@ import { auth } from '@/lib/firebase';
 import { onAuthStateChanged, User } from 'firebase/auth';
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import React from 'react';
 
 const notifications = [
     {
@@ -145,17 +146,20 @@ export default function Home() {
                                     </p>
                                 </div>
                                 <div className="grid gap-2">
-                                    {notifications.map((notification) => {
+                                    {notifications.map((notification, index) => {
                                         const Icon = notification.icon;
                                         return (
-                                        <div key={notification.id} className="grid grid-cols-[25px_1fr] items-start pb-4 last:mb-0 last:pb-0">
-                                            <Icon className="h-5 w-5 text-primary" />
-                                            <div className="grid gap-1">
-                                                <p className="text-sm font-medium leading-none">{notification.title}</p>
-                                                <p className="text-sm text-muted-foreground">{notification.description}</p>
-                                                <p className="text-xs text-muted-foreground mt-1">{notification.time}</p>
+                                        <React.Fragment key={notification.id}>
+                                            <div className="grid grid-cols-[25px_1fr] items-start pb-4 last:mb-0 last:pb-0">
+                                                <Icon className="h-5 w-5 text-primary" />
+                                                <div className="grid gap-1">
+                                                    <p className="text-sm font-medium leading-none">{notification.title}</p>
+                                                    <p className="text-sm text-muted-foreground">{notification.description}</p>
+                                                    <p className="text-xs text-muted-foreground mt-1">{notification.time}</p>
+                                                </div>
                                             </div>
-                                        </div>
+                                            {index < notifications.length - 1 && <Separator />}
+                                        </React.Fragment>
                                         )
                                     })}
                                 </div>
