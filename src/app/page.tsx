@@ -15,12 +15,14 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 export default function Home() {
   const [address, setAddress] = useState('123 Main St...');
   const [fullAddress, setFullAddress] = useState('123 Main St, Anytown, USA');
+  const [coordinates, setCoordinates] = useState<{lat: number, lon: number} | null>(null);
   const { toast } = useToast();
 
   const handleLocationClick = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         async (position) => {
+          setCoordinates({ lat: position.coords.latitude, lon: position.coords.longitude });
           try {
             // Using a free, no-key reverse geocoding service for demonstration
             const response = await fetch(
@@ -103,6 +105,17 @@ export default function Home() {
                            {fullAddress}
                         </p>
                         </div>
+                         {coordinates && (
+                          <Button 
+                            variant="outline" 
+                            asChild
+                          >
+                            <a href={`https://www.google.com/maps/search/?api=1&query=${coordinates.lat},${coordinates.lon}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
+                              <MapPin className="h-4 w-4" />
+                              View on Map
+                            </a>
+                          </Button>
+                        )}
                     </div>
                 </PopoverContent>
             </Popover>
