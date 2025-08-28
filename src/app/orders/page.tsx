@@ -66,7 +66,7 @@ export default function OrdersHistoryPage() {
         <div className="container mx-auto px-4 py-8">
           <div className="space-y-6">
             {pastOrders.map((order, index) => (
-              <React.Fragment key={order.id}>
+              <div key={order.id}>
                 <div className="flex items-center gap-4">
                   <div className="relative h-20 w-20 flex-shrink-0">
                     <Image
@@ -82,15 +82,16 @@ export default function OrdersHistoryPage() {
                     <p className="text-muted-foreground">Total: ${order.total.toFixed(2)}</p>
                     <p className="text-muted-foreground">{order.status} · {order.itemCount} items</p>
                   </div>
-                  <div className="flex flex-col gap-2">
+                  <div className="flex items-center gap-2">
                       <Button variant="outline" size="sm">Reorder</Button>
+                      <Separator orientation="vertical" className="h-6"/>
                       <Button asChild size="sm">
                         <Link href="/track-order">Track</Link>
                       </Button>
                   </div>
                 </div>
-                {index < pastOrders.length - 1 && <Separator />}
-              </React.Fragment>
+                {index < pastOrders.length - 1 && <Separator className="mt-6" />}
+              </div>
             ))}
           </div>
         </div>

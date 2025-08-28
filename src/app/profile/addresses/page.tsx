@@ -41,7 +41,7 @@ export default function SavedAddressesPage() {
                 {addresses.map((item, index) => {
                     const Icon = item.icon;
                     return (
-                        <React.Fragment key={item.id}>
+                        <div key={item.id}>
                             <div className="flex items-center space-x-4 p-4 border rounded-lg">
                                 <div className="p-3 bg-secondary rounded-lg">
                                     <Icon className="h-6 w-6 text-secondary-foreground" />
@@ -64,8 +64,8 @@ export default function SavedAddressesPage() {
                                     </DropdownMenuContent>
                                 </DropdownMenu>
                             </div>
-                            {index < addresses.length - 1 && <Separator />}
-                        </React.Fragment>
+                            {index < addresses.length - 1 && <Separator className="my-4" />}
+                        </div>
                     )
                 })}
             </RadioGroup>

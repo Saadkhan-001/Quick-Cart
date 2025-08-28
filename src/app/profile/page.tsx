@@ -92,7 +92,7 @@ export default function ProfilePage() {
                     {settingsItems.map((item, index) => {
                         const Icon = item.icon;
                         return (
-                            <Fragment key={item.label}>
+                            <div key={item.label}>
                                 <Link href={item.href}>
                                     <div className="flex items-center p-4 rounded-lg hover:bg-muted/50 cursor-pointer">
                                         <div className="p-3 bg-secondary rounded-lg mr-4">
@@ -102,7 +102,7 @@ export default function ProfilePage() {
                                     </div>
                                 </Link>
                                 {index < settingsItems.length - 1 && <Separator />}
-                            </Fragment>
+                            </div>
                         )
                     })}
                 </div>

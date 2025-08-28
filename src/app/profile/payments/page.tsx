@@ -49,7 +49,7 @@ export default function SavedPaymentsPage() {
                 {paymentMethods.map((item, index) => {
                     const Icon = item.icon;
                     return (
-                       <React.Fragment key={item.id}>
+                       <div key={item.id}>
                             <div className="flex items-center space-x-4 p-4 border rounded-lg">
                                 <div className="p-2 border rounded-md">
                                     <Icon />
@@ -72,8 +72,8 @@ export default function SavedPaymentsPage() {
                                     </DropdownMenuContent>
                                 </DropdownMenu>
                             </div>
-                            {index < paymentMethods.length - 1 && <Separator />}
-                        </React.Fragment>
+                            {index < paymentMethods.length - 1 && <Separator className="my-4"/>}
+                        </div>
                     )
                 })}
             </RadioGroup>
