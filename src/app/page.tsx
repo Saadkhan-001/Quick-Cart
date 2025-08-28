@@ -99,63 +99,65 @@ export default function Home() {
 
   return (
     <div className="flex flex-col">
-      <header className="container mx-auto px-4 py-6 space-y-6">
-        <div className="flex items-center justify-between">
-            {user ? (
-                <div>
-                    <h1 className="text-2xl font-bold">Welcome{user.displayName ? `, ${user.displayName}` : ''}</h1>
-                </div>
-            ) : (
-                <div className="flex items-center gap-2">
-                    <Button asChild variant="outline">
-                        <Link href="/login">Sign In</Link>
-                    </Button>
-                    <Button asChild>
-                        <Link href="/login">Sign Up</Link>
-                    </Button>
-                </div>
-            )}
-        </div>
-
-        <Separator />
-
-        <div className="flex items-center justify-between">
-            <Popover>
-                <PopoverTrigger asChild>
-                    <div className="cursor-pointer">
-                        <p className="text-sm text-muted-foreground">Delivery to</p>
-                        <span className="font-semibold truncate pr-2">{address}</span>
+      <header className="sticky top-0 z-10 bg-background/95 backdrop-blur-sm shadow-sm">
+        <div className="container mx-auto px-4 py-4 space-y-4">
+            <div className="flex items-center justify-between">
+                {user ? (
+                    <div>
+                        <h1 className="text-2xl font-bold">Welcome{user.displayName ? `, ${user.displayName}` : ''}</h1>
                     </div>
-                </PopoverTrigger>
-                <PopoverContent className="w-80">
-                    <div className="grid gap-4">
-                        <div className="space-y-2">
-                        <h4 className="font-medium leading-none">Full Address</h4>
-                        <p className="text-sm text-muted-foreground">
-                           {fullAddress}
-                        </p>
+                ) : (
+                    <div className="flex items-center gap-2">
+                        <Button asChild variant="outline">
+                            <Link href="/login">Sign In</Link>
+                        </Button>
+                        <Button asChild>
+                            <Link href="/login">Sign Up</Link>
+                        </Button>
+                    </div>
+                )}
+            </div>
+
+            <Separator />
+
+            <div className="flex items-center justify-between">
+                <Popover>
+                    <PopoverTrigger asChild>
+                        <div className="cursor-pointer">
+                            <p className="text-sm text-muted-foreground">Delivery to</p>
+                            <span className="font-semibold truncate pr-2">{address}</span>
                         </div>
-                         {coordinates && (
-                          <Button 
-                            variant="outline" 
-                            asChild
-                          >
-                            <a href={`https://www.google.com/maps/search/?api=1&query=${coordinates.lat},${coordinates.lon}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
-                              <MapPin className="h-4 w-4" />
-                              View on Map
-                            </a>
-                          </Button>
-                        )}
-                    </div>
-                </PopoverContent>
-            </Popover>
-            <Button variant="ghost" size="icon" onClick={handleLocationClick} aria-label="Get current location">
-              <MapPin className="h-6 w-6 text-foreground" />
-            </Button>
-        </div>
-        <div className="relative">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-          <Input placeholder="Search for products" className="pl-12 h-14 rounded-full bg-muted/50 border-0 focus-visible:ring-primary" />
+                    </PopoverTrigger>
+                    <PopoverContent className="w-80">
+                        <div className="grid gap-4">
+                            <div className="space-y-2">
+                            <h4 className="font-medium leading-none">Full Address</h4>
+                            <p className="text-sm text-muted-foreground">
+                               {fullAddress}
+                            </p>
+                            </div>
+                             {coordinates && (
+                              <Button 
+                                variant="outline" 
+                                asChild
+                              >
+                                <a href={`https://www.google.com/maps/search/?api=1&query=${coordinates.lat},${coordinates.lon}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
+                                  <MapPin className="h-4 w-4" />
+                                  View on Map
+                                </a>
+                              </Button>
+                            )}
+                        </div>
+                    </PopoverContent>
+                </Popover>
+                <Button variant="ghost" size="icon" onClick={handleLocationClick} aria-label="Get current location">
+                  <MapPin className="h-6 w-6 text-foreground" />
+                </Button>
+            </div>
+            <div className="relative">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+              <Input placeholder="Search for products" className="pl-12 h-14 rounded-full bg-muted/50 border-0 focus-visible:ring-primary" />
+            </div>
         </div>
       </header>
       
@@ -199,3 +201,4 @@ export default function Home() {
       </div>
     </div>
   );
+}
