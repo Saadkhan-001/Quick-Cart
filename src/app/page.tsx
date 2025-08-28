@@ -5,7 +5,7 @@ import { ProductGrid } from '@/components/product-grid';
 import { products } from '@/lib/products';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { MapPin, Search, Bell, Truck, Tag } from 'lucide-react';
+import { MapPin, Search, Bell, Truck, Tag, Menu, Leaf } from 'lucide-react';
 import Image from 'next/image';
 import { Separator } from '@/components/ui/separator';
 import { useToast } from '@/hooks/use-toast';
@@ -152,7 +152,7 @@ export default function Home() {
                                       {notifications.map((notification, index) => {
                                           const Icon = notification.icon;
                                           return (
-                                          <div key={notification.id}>
+                                            <React.Fragment key={notification.id}>
                                               <div className="grid grid-cols-[25px_1fr] items-start pb-4 last:mb-0 last:pb-0">
                                                   <Icon className="h-5 w-5 text-primary" />
                                                   <div className="grid gap-1">
@@ -162,7 +162,7 @@ export default function Home() {
                                                   </div>
                                               </div>
                                               {index < notifications.length - 1 && <Separator />}
-                                          </div>
+                                            </React.Fragment>
                                           )
                                       })}
                                   </div>
@@ -175,14 +175,20 @@ export default function Home() {
                         </div>
                     </div>
                 ) : (
-                    <div className="flex items-center gap-2 ml-auto">
-                        <ThemeToggle />
-                        <Button asChild variant="outline">
-                            <Link href="/login">Sign In</Link>
-                        </Button>
-                        <Button asChild>
-                            <Link href="/login">Sign Up</Link>
-                        </Button>
+                    <div className="flex items-center justify-between w-full">
+                        <div className="flex items-center gap-2">
+                           <Button variant="ghost" size="icon">
+                                <Menu />
+                           </Button>
+                           <Leaf className="h-6 w-6 text-primary" />
+                        </div>
+                        <div className="flex items-center gap-4">
+                            <Link href="/login" className="text-sm font-medium hover:underline">Log in</Link>
+                            <Button asChild>
+                                <Link href="/login">Sign up</Link>
+                            </Button>
+                            <ThemeToggle />
+                        </div>
                     </div>
                 )}
             </div>
@@ -271,5 +277,3 @@ export default function Home() {
     </div>
   );
 }
-
-    
