@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
-import { ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
 
@@ -52,11 +51,12 @@ export default function OnboardingPage() {
   };
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      handleNext();
-    }, 5000);
-
-    return () => clearInterval(timer);
+    if (currentSlide < onboardingSlides.length - 1) {
+      const timer = setTimeout(() => {
+        handleNext();
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
   }, [currentSlide]);
 
 
