@@ -2,23 +2,26 @@
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 
 interface AppStateContextType {
-  hasSeenWelcome: boolean;
+  hasSeenWelcome?: boolean;
   setHasSeenWelcome: (value: boolean) => void;
 }
 
 const AppStateContext = createContext<AppStateContextType | undefined>(undefined);
 
 export const AppStateProvider = ({ children }: { children: ReactNode }) => {
-  const [hasSeenWelcome, setHasSeenWelcomeState] = useState(false);
+  const [hasSeenWelcome, setHasSeenWelcomeState] = useState<boolean | undefined>(undefined);
 
   useEffect(() => {
     try {
       const storedValue = localStorage.getItem('has_seen_welcome');
-      if (storedValue) {
+      if (storedValue !== null) {
         setHasSeenWelcomeState(JSON.parse(storedValue));
+      } else {
+        setHasSeenWelcomeState(false);
       }
     } catch (error) {
         console.error("Could not read from localStorage", error);
+        setHasSeenWelcomeState(false);
     }
   }, []);
 
