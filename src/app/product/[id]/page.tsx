@@ -10,8 +10,7 @@ import { useState } from 'react';
 import { Separator } from '@/components/ui/separator';
 
 export default function ProductDetailsPage() {
-  const params = useParams();
-  const { id } = params;
+  const { id } = useParams();
   const { addToCart } = useCart();
   const [quantity, setQuantity] = useState(1);
 
