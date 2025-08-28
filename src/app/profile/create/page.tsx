@@ -47,10 +47,10 @@ export default function CreateProfilePage() {
           <Avatar className="h-28 w-28 border-2 border-primary/50">
             {imagePreview ? (
               <AvatarImage src={imagePreview} />
-            ) : null}
-            <AvatarFallback>
+            ) : <AvatarFallback>
               <User className="h-12 w-12 text-muted-foreground" />
-            </AvatarFallback>
+            </AvatarFallback>}
+            
           </Avatar>
           <input
             type="file"
