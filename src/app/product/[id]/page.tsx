@@ -1,13 +1,25 @@
+
 'use client';
 import { useParams } from 'next/navigation';
 import Image from 'next/image';
 import { products } from '@/lib/products';
 import { Button } from '@/components/ui/button';
-import { Star, Plus, Minus, ShoppingCart } from 'lucide-react';
+import { Star, Plus, Minus, ArrowLeft, Share2 } from 'lucide-react';
 import { ProductCard } from '@/components/product-card';
 import { useCart } from '@/contexts/cart-context';
 import { useState } from 'react';
 import { Separator } from '@/components/ui/separator';
+import { ProductHeader } from '@/components/product-header';
+import { Progress } from '@/components/ui/progress';
+
+const ratingDistribution = [
+  { star: 5, percentage: 40 },
+  { star: 4, percentage: 30 },
+  { star: 3, percentage: 15 },
+  { star: 2, percentage: 5 },
+  { star: 1, percentage: 10 },
+];
+
 
 export default function ProductDetailsPage() {
   const { id } = useParams();
@@ -27,65 +39,86 @@ export default function ProductDetailsPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
-        <div className="relative aspect-square">
-          <Image
-            src={product.imageUrl}
-            alt={product.name}
-            fill
-            className="object-cover rounded-lg"
-            data-ai-hint={product.hint}
-          />
-        </div>
-        <div className="flex flex-col">
-          <h1 className="text-3xl lg:text-4xl font-bold">{product.name}</h1>
-          {product.size && (
-            <p className="text-muted-foreground mt-2 text-lg">{product.size}</p>
-          )}
-           {product.rating && (
-            <div className="flex items-center gap-2 mt-2">
-              <div className="flex items-center">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className={`h-5 w-5 ${i < Math.floor(product.rating!) ? 'text-yellow-400 fill-yellow-400' : 'text-gray-300'}`} />
-                ))}
-              </div>
-              <span className="text-muted-foreground">{product.rating.toFixed(1)}</span>
-            </div>
-          )}
-          <p className="mt-4 text-gray-700">{product.description}</p>
-          <div className="flex items-baseline gap-2 mt-4">
-            <span className="text-3xl font-bold">${(product.price * (1 - (product.discount || 0))).toFixed(2)}</span>
-            {product.discount && (
-              <span className="text-lg text-muted-foreground line-through">${product.price.toFixed(2)}</span>
-            )}
-          </div>
-
-          <div className="flex items-center gap-4 mt-6">
-            <p>Quantity:</p>
-            <div className="flex items-center gap-2 border rounded-md p-1">
-              <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setQuantity(Math.max(1, quantity - 1))}>
-                <Minus className="h-4 w-4" />
-              </Button>
-              <span className="w-8 text-center">{quantity}</span>
-              <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setQuantity(quantity + 1)}>
-                <Plus className="h-4 w-4" />
-              </Button>
-            </div>
-          </div>
-          
-          <Button size="lg" className="mt-auto w-full bg-accent text-accent-foreground hover:bg-accent/90" onClick={handleAddToCart}>
-            <ShoppingCart className="mr-2" /> Add to Cart
-          </Button>
-        </div>
+    <div className="bg-background">
+      <ProductHeader />
+      <div className="relative aspect-[3/4] w-full">
+        <Image
+          src={product.imageUrl}
+          alt={product.name}
+          fill
+          className="object-cover rounded-b-3xl"
+          data-ai-hint={product.hint}
+        />
       </div>
-      <Separator className="my-12" />
-      <div>
-        <h2 className="text-2xl font-bold mb-6">You might also like</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {suggestedProducts.map(p => (
-            <ProductCard product={p} key={p.id} />
-          ))}
+
+      <div className="container mx-auto px-4 py-6 space-y-6">
+        <div>
+            <h1 className="text-3xl font-bold">{product.name}</h1>
+            {product.size && (
+                <p className="text-muted-foreground mt-1 text-lg">{product.size}</p>
+            )}
+        </div>
+
+        {product.rating && (
+            <div className="flex gap-6 items-start">
+                <div className="flex flex-col items-center">
+                    <p className="text-4xl font-bold">{product.rating.toFixed(1)}</p>
+                    <div className="flex items-center">
+                        {[...Array(5)].map((_, i) => (
+                        <Star key={i} className={`h-5 w-5 ${i < Math.floor(product.rating!) ? 'text-primary fill-primary' : 'text-gray-300'}`} />
+                        ))}
+                    </div>
+                    <p className="text-sm text-muted-foreground mt-1">120 reviews</p>
+                </div>
+                <div className="flex-1 space-y-1">
+                    {ratingDistribution.map(item => (
+                        <div key={item.star} className="flex items-center gap-2">
+                            <span className="text-sm text-muted-foreground">{item.star}</span>
+                            <Progress value={item.percentage} className="h-2 bg-muted" />
+                            <span className="text-sm text-muted-foreground w-8 text-right">{item.percentage}%</span>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        )}
+        
+        <Separator />
+
+        <div className="flex justify-between items-center">
+            <div className="flex items-baseline gap-2">
+                <span className="text-3xl font-bold">${(product.price * (1 - (product.discount || 0))).toFixed(2)}</span>
+                {product.discount && (
+                <span className="text-lg text-muted-foreground line-through">${product.price.toFixed(2)}</span>
+                )}
+            </div>
+
+            <div className="flex items-center gap-4">
+                <p className="text-muted-foreground">Quantity</p>
+                <div className="flex items-center gap-2 border rounded-full p-1">
+                <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full" onClick={() => setQuantity(Math.max(1, quantity - 1))}>
+                    <Minus className="h-4 w-4" />
+                </Button>
+                <span className="w-8 text-center font-bold">{quantity}</span>
+                <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full" onClick={() => setQuantity(quantity + 1)}>
+                    <Plus className="h-4 w-4" />
+                </Button>
+                </div>
+            </div>
+        </div>
+        
+        <Button size="lg" className="w-full bg-primary text-primary-foreground h-14 rounded-full text-lg font-bold" onClick={handleAddToCart}>
+            Add to Cart
+        </Button>
+        
+        <Separator />
+
+        <div>
+            <h2 className="text-2xl font-bold mb-4">You may also like</h2>
+            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {suggestedProducts.map(p => (
+                <ProductCard product={p} key={p.id} />
+            ))}
+            </div>
         </div>
       </div>
     </div>
