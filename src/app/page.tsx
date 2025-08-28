@@ -5,7 +5,7 @@ import { ProductGrid } from '@/components/product-grid';
 import { products } from '@/lib/products';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { MapPin, Search } from 'lucide-react';
+import { MapPin, Search, Bell } from 'lucide-react';
 import Image from 'next/image';
 import { Separator } from '@/components/ui/separator';
 import { useToast } from '@/hooks/use-toast';
@@ -103,8 +103,14 @@ export default function Home() {
         <div className="container mx-auto px-4 py-4 space-y-4">
             <div className="flex items-center justify-between">
                 {user ? (
-                    <div>
+                    <div className="flex items-center justify-between w-full">
                         <h1 className="text-2xl font-bold">Welcome{user.displayName ? `, ${user.displayName}` : ''}</h1>
+                         <Button asChild variant="ghost" size="icon">
+                           <Link href="/notifications">
+                                <Bell />
+                                <span className="sr-only">Notifications</span>
+                           </Link>
+                        </Button>
                     </div>
                 ) : (
                     <div className="flex items-center gap-2">
