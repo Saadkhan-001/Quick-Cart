@@ -1,6 +1,6 @@
 
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
@@ -45,6 +45,15 @@ export default function OnboardingPage() {
       router.push('/login');
     }
   };
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      handleNext();
+    }, 5000);
+
+    return () => clearInterval(timer); // Cleanup the interval on component unmount or re-render
+  }, [currentSlide]);
+
 
   const handleSkip = () => {
     router.push('/login');
