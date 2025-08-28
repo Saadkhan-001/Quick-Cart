@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Camera, ArrowLeft } from 'lucide-react';
+import { Camera, ArrowLeft, User } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState, useRef } from 'react';
 
@@ -45,8 +45,12 @@ export default function CreateProfilePage() {
       <div className="flex flex-col items-center text-center space-y-4">
         <div className="relative">
           <Avatar className="h-28 w-28 border-2 border-primary/50">
-            <AvatarImage src={imagePreview || "https://picsum.photos/201/201"} data-ai-hint="woman portrait" />
-            <AvatarFallback>U</AvatarFallback>
+            {imagePreview ? (
+              <AvatarImage src={imagePreview} />
+            ) : null}
+            <AvatarFallback>
+              <User className="h-12 w-12 text-muted-foreground" />
+            </AvatarFallback>
           </Avatar>
           <input
             type="file"
