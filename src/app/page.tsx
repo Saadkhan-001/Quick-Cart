@@ -1,4 +1,3 @@
-import { AIRecommendations } from '@/components/ai-recommendations';
 import { ProductGrid } from '@/components/product-grid';
 import { products } from '@/lib/products';
 
@@ -15,8 +14,6 @@ export default function Home() {
       </div>
 
       <ProductGrid products={products} />
-
-      <AIRecommendations />
     </div>
   );
 }
