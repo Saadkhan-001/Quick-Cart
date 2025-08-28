@@ -1,3 +1,4 @@
+
 'use client';
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
@@ -9,7 +10,8 @@ import {
   GoogleAuthProvider, 
   signInWithPopup,
   getAdditionalUserInfo,
-  onAuthStateChanged
+  onAuthStateChanged,
+  User
 } from 'firebase/auth';
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
@@ -23,14 +25,14 @@ export default function LoginPage() {
   const router = useRouter();
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, (user: User | null) => {
       if (user) {
-        // User is signed in.
-        const isNewUser = getAdditionalUserInfo(user.metadata)?.isNewUser;
-        if(isNewUser) {
-             router.push('/profile/create');
+        // Firebase sometimes triggers this listener before metadata is ready.
+        // We check for creationTime and lastSignInTime to gauge if metadata is populated.
+        if (user.metadata.creationTime === user.metadata.lastSignInTime) {
+           router.push('/profile/create');
         } else {
-             router.push('/');
+           router.push('/');
         }
       }
     });
@@ -47,14 +49,14 @@ export default function LoginPage() {
           title: 'Account Created',
           description: "We've created your account for you.",
         });
-        router.push('/profile/create');
+        // The onAuthStateChanged listener will handle redirection.
       } else {
         await signInWithEmailAndPassword(auth, email, password);
         toast({
           title: 'Signed In',
           description: 'Welcome back!',
         });
-        router.push('/');
+        // The onAuthStateChanged listener will handle redirection.
       }
     } catch (error: any) {
       toast({
@@ -71,17 +73,14 @@ export default function LoginPage() {
       const result = await signInWithPopup(auth, provider);
       const additionalUserInfo = getAdditionalUserInfo(result);
       
+      toast({
+          title: 'Signed In with Google',
+          description: 'Welcome back!',
+      });
+
       if (additionalUserInfo?.isNewUser) {
-        toast({
-            title: 'Account Created',
-            description: "Welcome! Let's get your profile set up.",
-        });
         router.push('/profile/create');
       } else {
-        toast({
-            title: 'Signed In with Google',
-            description: 'Welcome back!',
-        });
         router.push('/');
       }
     } catch (error: any) {
