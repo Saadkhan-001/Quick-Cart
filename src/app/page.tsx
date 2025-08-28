@@ -5,7 +5,7 @@ import { ProductGrid } from '@/components/product-grid';
 import { products } from '@/lib/products';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { MapPin, Search, Bell } from 'lucide-react';
+import { MapPin, Search, Bell, Truck, Tag } from 'lucide-react';
 import Image from 'next/image';
 import { Separator } from '@/components/ui/separator';
 import { useToast } from '@/hooks/use-toast';
@@ -13,7 +13,31 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { auth } from '@/lib/firebase';
 import { onAuthStateChanged, User } from 'firebase/auth';
 import Link from 'next/link';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
+const notifications = [
+    {
+      id: 1,
+      icon: Truck,
+      title: 'Order Delivered',
+      description: 'Your order #ORD12345 has been delivered.',
+      time: '2 hours ago',
+    },
+    {
+      id: 2,
+      icon: Tag,
+      title: 'Special Offer!',
+      description: 'Get 20% off on all vegetables this weekend.',
+      time: '1 day ago',
+    },
+     {
+      id: 3,
+      icon: Truck,
+      title: 'Order Shipped',
+      description: 'Your order #ORD12345 is out for delivery.',
+      time: '4 hours ago',
+    },
+  ];
 
 export default function Home() {
   const [address, setAddress] = useState('123 Main St...');
@@ -105,12 +129,42 @@ export default function Home() {
                 {user ? (
                     <div className="flex items-center justify-between w-full">
                         <h1 className="text-2xl font-bold">Welcome{user.displayName ? `, ${user.displayName}` : ''}</h1>
-                         <Button asChild variant="ghost" size="icon">
-                           <Link href="/notifications">
-                                <Bell />
-                                <span className="sr-only">Notifications</span>
-                           </Link>
-                        </Button>
+                         <Popover>
+                            <PopoverTrigger asChild>
+                                <Button variant="ghost" size="icon">
+                                    <Bell />
+                                    <span className="sr-only">Notifications</span>
+                                </Button>
+                            </PopoverTrigger>
+                            <PopoverContent className="w-80" align="end">
+                                <div className="grid gap-4">
+                                <div className="space-y-2">
+                                    <h4 className="font-medium leading-none">Notifications</h4>
+                                    <p className="text-sm text-muted-foreground">
+                                    You have {notifications.length} new messages.
+                                    </p>
+                                </div>
+                                <div className="grid gap-2">
+                                    {notifications.map((notification) => {
+                                        const Icon = notification.icon;
+                                        return (
+                                        <div key={notification.id} className="grid grid-cols-[25px_1fr] items-start pb-4 last:mb-0 last:pb-0">
+                                            <Icon className="h-5 w-5 text-primary" />
+                                            <div className="grid gap-1">
+                                                <p className="text-sm font-medium leading-none">{notification.title}</p>
+                                                <p className="text-sm text-muted-foreground">{notification.description}</p>
+                                                <p className="text-xs text-muted-foreground mt-1">{notification.time}</p>
+                                            </div>
+                                        </div>
+                                        )
+                                    })}
+                                </div>
+                                </div>
+                                <Button className="w-full mt-4" asChild>
+                                    <Link href="/notifications">View all notifications</Link>
+                                </Button>
+                            </PopoverContent>
+                        </Popover>
                     </div>
                 ) : (
                     <div className="flex items-center gap-2">
@@ -208,3 +262,5 @@ export default function Home() {
     </div>
   );
 }
+
+    
