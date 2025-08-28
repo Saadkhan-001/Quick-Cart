@@ -9,7 +9,7 @@ import Image from 'next/image';
 const onboardingSlides = [
   {
     image: {
-      src: 'https://picsum.photos/400/300',
+      src: 'https://images.unsplash.com/photo-1659353741155-e988422cf9ed?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxkZWxpdmVyeSUyMGJveSUyMHdpdGglMjB3aGl0ZSUyMGJhY2tncm91bmR8ZW58MHx8fHwxNzU2NDA3OTUxfDA&ixlib=rb-4.1.0&q=80&w=1080',
       hint: 'delivery scooter',
     },
     title: 'Get groceries delivered in minutes',
