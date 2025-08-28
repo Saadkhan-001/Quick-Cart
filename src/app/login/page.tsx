@@ -27,9 +27,10 @@ export default function LoginPage() {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user: User | null) => {
       if (user) {
-        // Firebase sometimes triggers this listener before metadata is ready.
-        // We check for creationTime and lastSignInTime to gauge if metadata is populated.
-        if (user.metadata.creationTime === user.metadata.lastSignInTime) {
+        // User is signed in, see docs for a list of available properties
+        // https://firebase.google.com/docs/reference/js/firebase.User
+        const isNewUser = user.metadata.creationTime === user.metadata.lastSignInTime;
+        if (isNewUser) {
            router.push('/profile/create');
         } else {
            router.push('/');
@@ -37,6 +38,7 @@ export default function LoginPage() {
       }
     });
 
+    // Unsubscribe to the listener when the component unmounts
     return () => unsubscribe();
   }, [router]);
 
@@ -78,11 +80,9 @@ export default function LoginPage() {
           description: 'Welcome back!',
       });
 
-      if (additionalUserInfo?.isNewUser) {
-        router.push('/profile/create');
-      } else {
-        router.push('/');
-      }
+      // The onAuthStateChanged listener will handle redirection logic,
+      // so we don't need to duplicate it here.
+      
     } catch (error: any) {
       toast({
         variant: 'destructive',
