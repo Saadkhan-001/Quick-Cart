@@ -7,7 +7,7 @@ import { Heart, Bell, HelpCircle, LogOut, MapPin, CreditCard, User as UserIcon, 
 import Link from 'next/link';
 import { auth } from '@/lib/firebase';
 import { onAuthStateChanged, User, signOut } from 'firebase/auth';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Fragment } from 'react';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
 
@@ -88,19 +88,24 @@ export default function ProfilePage() {
 
             <div className="space-y-2">
                 <h2 className="text-lg font-semibold px-4 mb-2">Settings</h2>
-                {settingsItems.map((item) => {
-                    const Icon = item.icon;
-                    return (
-                        <Link href={item.href} key={item.label}>
-                            <div className="flex items-center p-4 rounded-lg hover:bg-muted/50 cursor-pointer">
-                                 <div className="p-3 bg-secondary rounded-lg mr-4">
-                                    <Icon className="h-6 w-6 text-secondary-foreground" />
-                                </div>
-                                <span>{item.label}</span>
-                            </div>
-                        </Link>
-                    )
-                })}
+                <div className="rounded-lg border">
+                    {settingsItems.map((item, index) => {
+                        const Icon = item.icon;
+                        return (
+                            <Fragment key={item.label}>
+                                <Link href={item.href}>
+                                    <div className="flex items-center p-4 rounded-lg hover:bg-muted/50 cursor-pointer">
+                                        <div className="p-3 bg-secondary rounded-lg mr-4">
+                                            <Icon className="h-6 w-6 text-secondary-foreground" />
+                                        </div>
+                                        <span>{item.label}</span>
+                                    </div>
+                                </Link>
+                                {index < settingsItems.length - 1 && <Separator />}
+                            </Fragment>
+                        )
+                    })}
+                </div>
             </div>
 
             <div className="mt-8">
