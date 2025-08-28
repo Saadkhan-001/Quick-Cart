@@ -1,3 +1,4 @@
+
 'use client';
 import { useState } from 'react';
 import { ProductGrid } from '@/components/product-grid';
@@ -8,10 +9,12 @@ import { MapPin, Search } from 'lucide-react';
 import Image from 'next/image';
 import { Separator } from '@/components/ui/separator';
 import { useToast } from '@/hooks/use-toast';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
 
 export default function Home() {
   const [address, setAddress] = useState('123 Main St...');
+  const [fullAddress, setFullAddress] = useState('123 Main St, Anytown, USA');
   const { toast } = useToast();
 
   const handleLocationClick = () => {
@@ -27,18 +30,22 @@ export default function Home() {
             if (data && data.address) {
                 const city = data.address.city || data.address.town || data.address.village || data.display_name.split(',')[0];
                 setAddress(city);
+                setFullAddress(data.display_name);
                 toast({
                     title: 'Location Updated',
                     description: `Your delivery address has been set to: ${data.display_name}`,
                 });
             } else if (data && data.display_name) {
-                setAddress(data.display_name.split(',')[0]);
+                const city = data.display_name.split(',')[0];
+                setAddress(city);
+                setFullAddress(data.display_name);
                 toast({
                     title: 'Location Updated',
                     description: `Your delivery address has been set to: ${data.display_name}`,
                 });
             } else {
                 setAddress('Address not found');
+                setFullAddress('Could not determine full address.');
             }
           } catch (error) {
             console.error('Error fetching address:', error);
@@ -48,6 +55,7 @@ export default function Home() {
               description: 'Could not fetch your address.',
             });
             setAddress('Could not fetch address');
+            setFullAddress('Could not fetch address');
           }
         },
         (error) => {
@@ -80,10 +88,24 @@ export default function Home() {
     <div className="flex flex-col">
       <div className="container mx-auto px-4 py-6 space-y-6">
         <div className="flex items-center justify-between">
-            <div>
-                <p className="text-sm text-muted-foreground">Delivery to</p>
-                <span className="font-semibold truncate pr-2">{address}</span>
-            </div>
+            <Popover>
+                <PopoverTrigger asChild>
+                    <div className="cursor-pointer">
+                        <p className="text-sm text-muted-foreground">Delivery to</p>
+                        <span className="font-semibold truncate pr-2">{address}</span>
+                    </div>
+                </PopoverTrigger>
+                <PopoverContent className="w-80">
+                    <div className="grid gap-4">
+                        <div className="space-y-2">
+                        <h4 className="font-medium leading-none">Full Address</h4>
+                        <p className="text-sm text-muted-foreground">
+                           {fullAddress}
+                        </p>
+                        </div>
+                    </div>
+                </PopoverContent>
+            </Popover>
             <Button variant="ghost" size="icon" onClick={handleLocationClick} aria-label="Get current location">
               <MapPin className="h-6 w-6 text-foreground" />
             </Button>
