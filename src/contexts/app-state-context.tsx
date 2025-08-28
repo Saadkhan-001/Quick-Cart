@@ -13,21 +13,21 @@ export const AppStateProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     try {
-      const storedValue = sessionStorage.getItem('has_seen_welcome');
+      const storedValue = localStorage.getItem('has_seen_welcome');
       if (storedValue) {
         setHasSeenWelcomeState(JSON.parse(storedValue));
       }
     } catch (error) {
-        console.error("Could not read from sessionStorage", error);
+        console.error("Could not read from localStorage", error);
     }
   }, []);
 
   const setHasSeenWelcome = (value: boolean) => {
     try {
-      sessionStorage.setItem('has_seen_welcome', JSON.stringify(value));
+      localStorage.setItem('has_seen_welcome', JSON.stringify(value));
       setHasSeenWelcomeState(value);
     } catch (error) {
-        console.error("Could not save to sessionStorage", error);
+        console.error("Could not save to localStorage", error);
     }
   };
 
