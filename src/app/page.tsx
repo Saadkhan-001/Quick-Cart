@@ -12,6 +12,7 @@ import { useToast } from '@/hooks/use-toast';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { auth } from '@/lib/firebase';
 import { onAuthStateChanged, User } from 'firebase/auth';
+import Link from 'next/link';
 
 
 export default function Home() {
@@ -100,9 +101,20 @@ export default function Home() {
     <div className="flex flex-col">
       <div className="container mx-auto px-4 py-6 space-y-6">
         <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl font-bold">Welcome{user?.displayName ? `, ${user.displayName}` : ''}</h1>
-          </div>
+            {user ? (
+                <div>
+                    <h1 className="text-2xl font-bold">Welcome{user.displayName ? `, ${user.displayName}` : ''}</h1>
+                </div>
+            ) : (
+                <div className="flex items-center gap-2">
+                    <Button asChild variant="outline">
+                        <Link href="/login">Sign In</Link>
+                    </Button>
+                    <Button asChild>
+                        <Link href="/login">Sign Up</Link>
+                    </Button>
+                </div>
+            )}
         </div>
 
         <Separator />
