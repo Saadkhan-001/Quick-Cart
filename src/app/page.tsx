@@ -16,6 +16,7 @@ import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import React from 'react';
 import { ThemeToggle } from '@/components/theme-toggle';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const notifications = [
     {
@@ -46,11 +47,13 @@ export default function Home() {
   const [fullAddress, setFullAddress] = useState('123 Main St, Anytown, USA');
   const [coordinates, setCoordinates] = useState<{lat: number, lon: number} | null>(null);
   const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
   const { toast } = useToast();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
+      setLoading(false);
     });
     return () => unsubscribe();
   }, []);
@@ -123,74 +126,98 @@ export default function Home() {
     }
   };
 
+  const renderHeaderContent = () => {
+    if (loading) {
+      return (
+         <div className="flex items-center justify-between w-full">
+            <div className="flex items-center gap-2">
+               <Skeleton className="h-8 w-8 rounded-full" />
+               <Skeleton className="h-6 w-24" />
+            </div>
+            <div className="flex items-center gap-4">
+                <Skeleton className="h-8 w-16" />
+                <Skeleton className="h-10 w-24 rounded-md" />
+                <Skeleton className="h-10 w-10 rounded-full" />
+            </div>
+        </div>
+      )
+    }
+
+    if (user) {
+      return (
+        <div className="flex items-center justify-between w-full">
+            <h1 className="text-2xl font-bold">Welcome{user.displayName ? `, ${user.displayName}` : ''}</h1>
+            <div className="flex items-center gap-2">
+              <ThemeToggle />
+              <Popover>
+                  <PopoverTrigger asChild>
+                      <Button variant="ghost" size="icon">
+                          <Bell />
+                          <span className="sr-only">Notifications</span>
+                      </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-80" align="end">
+                      <div className="grid gap-4">
+                      <div className="space-y-2">
+                          <h4 className="font-medium leading-none">Notifications</h4>
+                          <p className="text-sm text-muted-foreground">
+                          You have {notifications.length} new messages.
+                          </p>
+                      </div>
+                      <div className="grid gap-2">
+                          {notifications.map((notification, index) => {
+                              const Icon = notification.icon;
+                              return (
+                                <React.Fragment key={notification.id}>
+                                  <div className="grid grid-cols-[25px_1fr] items-start pb-4 last:mb-0 last:pb-0">
+                                      <Icon className="h-5 w-5 text-primary" />
+                                      <div className="grid gap-1">
+                                          <p className="text-sm font-medium leading-none">{notification.title}</p>
+                                          <p className="text-sm text-muted-foreground">{notification.description}</p>
+                                          <p className="text-xs text-muted-foreground mt-1">{notification.time}</p>
+                                      </div>
+                                  </div>
+                                  {index < notifications.length - 1 && <Separator />}
+                                </React.Fragment>
+                              )
+                          })}
+                      </div>
+                      </div>
+                      <Button className="w-full mt-4" asChild>
+                          <Link href="/notifications">View all notifications</Link>
+                      </Button>
+                  </PopoverContent>
+              </Popover>
+            </div>
+        </div>
+      )
+    }
+
+    return (
+      <div className="flex items-center justify-between w-full">
+          <div className="flex items-center gap-2">
+             <Button variant="ghost" size="icon">
+                  <Menu />
+             </Button>
+             <Leaf className="h-6 w-6 text-primary" />
+          </div>
+          <div className="flex items-center gap-4">
+              <Link href="/login" className="text-sm font-medium hover:underline">Log in</Link>
+              <Button asChild>
+                  <Link href="/login">Sign up</Link>
+              </Button>
+              <ThemeToggle />
+          </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col">
       <header className="sticky top-0 z-10 bg-background/95 backdrop-blur-sm shadow-sm">
         <div className="container mx-auto px-4 py-4 space-y-4">
             <div className="flex items-center justify-between">
-                {user ? (
-                    <div className="flex items-center justify-between w-full">
-                        <h1 className="text-2xl font-bold">Welcome{user.displayName ? `, ${user.displayName}` : ''}</h1>
-                        <div className="flex items-center gap-2">
-                          <ThemeToggle />
-                          <Popover>
-                              <PopoverTrigger asChild>
-                                  <Button variant="ghost" size="icon">
-                                      <Bell />
-                                      <span className="sr-only">Notifications</span>
-                                  </Button>
-                              </PopoverTrigger>
-                              <PopoverContent className="w-80" align="end">
-                                  <div className="grid gap-4">
-                                  <div className="space-y-2">
-                                      <h4 className="font-medium leading-none">Notifications</h4>
-                                      <p className="text-sm text-muted-foreground">
-                                      You have {notifications.length} new messages.
-                                      </p>
-                                  </div>
-                                  <div className="grid gap-2">
-                                      {notifications.map((notification, index) => {
-                                          const Icon = notification.icon;
-                                          return (
-                                            <React.Fragment key={notification.id}>
-                                              <div className="grid grid-cols-[25px_1fr] items-start pb-4 last:mb-0 last:pb-0">
-                                                  <Icon className="h-5 w-5 text-primary" />
-                                                  <div className="grid gap-1">
-                                                      <p className="text-sm font-medium leading-none">{notification.title}</p>
-                                                      <p className="text-sm text-muted-foreground">{notification.description}</p>
-                                                      <p className="text-xs text-muted-foreground mt-1">{notification.time}</p>
-                                                  </div>
-                                              </div>
-                                              {index < notifications.length - 1 && <Separator />}
-                                            </React.Fragment>
-                                          )
-                                      })}
-                                  </div>
-                                  </div>
-                                  <Button className="w-full mt-4" asChild>
-                                      <Link href="/notifications">View all notifications</Link>
-                                  </Button>
-                              </PopoverContent>
-                          </Popover>
-                        </div>
-                    </div>
-                ) : (
-                    <div className="flex items-center justify-between w-full">
-                        <div className="flex items-center gap-2">
-                           <Button variant="ghost" size="icon">
-                                <Menu />
-                           </Button>
-                           <Leaf className="h-6 w-6 text-primary" />
-                        </div>
-                        <div className="flex items-center gap-4">
-                            <Link href="/login" className="text-sm font-medium hover:underline">Log in</Link>
-                            <Button asChild>
-                                <Link href="/login">Sign up</Link>
-                            </Button>
-                            <ThemeToggle />
-                        </div>
-                    </div>
-                )}
+                {renderHeaderContent()}
             </div>
 
             <Separator />
