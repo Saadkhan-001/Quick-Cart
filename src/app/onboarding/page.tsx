@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
+import { useAppState } from '@/contexts/app-state-context';
 
 const onboardingSlides = [
   {
@@ -37,6 +38,7 @@ export default function OnboardingPage() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
   const router = useRouter();
+  const { setHasSeenWelcome } = useAppState();
 
   const handleNext = () => {
     setIsAnimating(true);
@@ -44,6 +46,7 @@ export default function OnboardingPage() {
         if (currentSlide < onboardingSlides.length - 1) {
           setCurrentSlide(currentSlide + 1);
         } else {
+          setHasSeenWelcome(true);
           router.push('/login');
         }
         setIsAnimating(false);
@@ -61,6 +64,7 @@ export default function OnboardingPage() {
 
 
   const handleSkip = () => {
+    setHasSeenWelcome(true);
     router.push('/login');
   };
 
