@@ -25,11 +25,11 @@ const onboardingSlides = [
   },
   {
     image: {
-      src: 'https://picsum.photos/400/302',
+      src: 'https://images.unsplash.com/photo-1584433144859-1fc3ab64a957?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxzZWN1cmUlMjBwYXltZW50JTIwbG9ja3xlbnwwfHx8fDE3MjQ4ODQxNTV8MA&ixlib=rb-4.1.0&q=80&w=1080',
       hint: 'secure payment',
     },
-    title: 'Secure Payments',
-    description: 'Pay with your favorite method. All transactions are secure.',
+    title: 'Secure payments',
+    description: 'Your payments are safe with us. We use industry-standard encryption to protect your financial information.',
   },
 ];
 
