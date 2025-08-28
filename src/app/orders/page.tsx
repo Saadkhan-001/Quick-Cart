@@ -64,7 +64,6 @@ export default function OrdersHistoryPage() {
       </header>
       <main className="flex-1">
         <div className="container mx-auto px-4 py-8">
-          <h2 className="text-2xl font-bold tracking-tight mb-6">Past Orders</h2>
           <div className="space-y-6">
             {pastOrders.map((order, index) => (
               <React.Fragment key={order.id}>
