@@ -237,7 +237,7 @@ export default function Home() {
       </header>
       
       <div className="container mx-auto px-4 my-4">
-        <div className="relative aspect-video md:aspect-[2/1] lg:aspect-[2.4/1] w-full rounded-2xl overflow-hidden">
+        <div className="relative aspect-video md:aspect-[2.4/1] w-full rounded-2xl overflow-hidden">
             <Image 
                 src="https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=2070&auto=format&fit=crop"
                 alt="Fresh vegetables"
