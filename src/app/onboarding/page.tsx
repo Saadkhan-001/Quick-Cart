@@ -52,7 +52,7 @@ export default function OnboardingPage() {
   const { image, title, description } = onboardingSlides[currentSlide];
 
   return (
-    <div className="flex flex-col h-screen bg-background">
+    <div className="flex flex-col h-screen bg-[#FAF8F1]">
       <div className="flex-1 flex flex-col items-center justify-center text-center px-6">
         <div className="relative w-full max-w-sm aspect-[4/3] mb-8">
             <Image
@@ -67,22 +67,22 @@ export default function OnboardingPage() {
         <p className="text-muted-foreground max-w-sm">{description}</p>
       </div>
       <div className="p-6 space-y-6">
-        <div className="flex items-center justify-center">
+        <div className="flex items-center justify-center space-x-2">
           {onboardingSlides.map((_, index) => (
             <button
               key={index}
               onClick={() => setCurrentSlide(index)}
               className={cn(
-                'h-2 w-2 rounded-full mx-1.5 transition-all duration-300',
-                currentSlide === index ? 'w-4 bg-accent' : 'bg-muted'
+                'h-2 w-2 rounded-full transition-all duration-300',
+                currentSlide === index ? 'w-4 bg-[#FDBA43]' : 'bg-gray-300'
               )}
               aria-label={`Go to slide ${index + 1}`}
             />
           ))}
         </div>
         <div className="flex justify-between items-center gap-4">
-            <Button variant="ghost" className="w-1/2" size="lg" onClick={handleSkip}>Skip</Button>
-            <Button size="lg" className="w-1/2 bg-accent text-accent-foreground hover:bg-accent/90" onClick={handleNext}>
+            <Button variant="ghost" className="w-1/2 bg-gray-200 hover:bg-gray-300 text-black" size="lg" onClick={handleSkip}>Skip</Button>
+            <Button size="lg" className="w-1/2 bg-[#FDBA43] text-black hover:bg-yellow-400" onClick={handleNext}>
                 {currentSlide === onboardingSlides.length - 1 ? 'Get Started' : 'Next'}
             </Button>
         </div>
