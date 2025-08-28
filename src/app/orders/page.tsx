@@ -5,6 +5,8 @@ import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
+import { Separator } from '@/components/ui/separator';
+import React from 'react';
 
 const pastOrders = [
   {
@@ -64,29 +66,32 @@ export default function OrdersHistoryPage() {
         <div className="container mx-auto px-4 py-8">
           <h2 className="text-2xl font-bold tracking-tight mb-6">Past Orders</h2>
           <div className="space-y-6">
-            {pastOrders.map((order) => (
-              <div key={order.id} className="flex items-center gap-4">
-                <div className="relative h-20 w-20 flex-shrink-0">
-                  <Image
-                    src={order.imageUrl}
-                    alt={`Order #${order.id}`}
-                    fill
-                    className="rounded-lg object-cover"
-                    data-ai-hint={order.hint}
-                  />
+            {pastOrders.map((order, index) => (
+              <React.Fragment key={order.id}>
+                <div className="flex items-center gap-4">
+                  <div className="relative h-20 w-20 flex-shrink-0">
+                    <Image
+                      src={order.imageUrl}
+                      alt={`Order #${order.id}`}
+                      fill
+                      className="rounded-lg object-cover"
+                      data-ai-hint={order.hint}
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="font-bold text-lg">Order #{order.id}</h3>
+                    <p className="text-muted-foreground">Total: ${order.total.toFixed(2)}</p>
+                    <p className="text-muted-foreground">{order.status} · {order.itemCount} items</p>
+                  </div>
+                  <div className="flex flex-col gap-2">
+                      <Button variant="outline" size="sm">Reorder</Button>
+                      <Button asChild size="sm">
+                        <Link href="/track-order">Track</Link>
+                      </Button>
+                  </div>
                 </div>
-                <div className="flex-1">
-                  <h3 className="font-bold text-lg">Order #{order.id}</h3>
-                  <p className="text-muted-foreground">Total: ${order.total.toFixed(2)}</p>
-                  <p className="text-muted-foreground">{order.status} · {order.itemCount} items</p>
-                </div>
-                <div className="flex flex-col gap-2">
-                    <Button variant="outline" size="sm">Reorder</Button>
-                    <Button asChild size="sm">
-                      <Link href="/track-order">Track</Link>
-                    </Button>
-                </div>
-              </div>
+                {index < pastOrders.length - 1 && <Separator />}
+              </React.Fragment>
             ))}
           </div>
         </div>
