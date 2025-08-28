@@ -6,6 +6,9 @@ export type Product = {
   imageUrl: string;
   category: string;
   hint: string;
+  rating?: number;
+  discount?: number;
+  size?: string;
 };
 
 export type CartItem = {

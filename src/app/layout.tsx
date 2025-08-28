@@ -2,8 +2,9 @@ import type { Metadata } from 'next';
 import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
 import { CartProvider } from '@/contexts/cart-context';
-import { Header } from '@/components/header';
 import { FavoritesProvider } from '@/contexts/favorites-context';
+import { AppStateProvider } from '@/contexts/app-state-context';
+import AppContent from './app-content';
 
 export const metadata: Metadata = {
   title: 'Quick Cart',
@@ -23,15 +24,16 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet" />
       </head>
       <body className="font-body antialiased">
-        <FavoritesProvider>
-          <CartProvider>
-            <div className="relative flex min-h-screen flex-col">
-              <Header />
-              <main className="flex-1">{children}</main>
-            </div>
-            <Toaster />
-          </CartProvider>
-        </FavoritesProvider>
+        <AppStateProvider>
+          <FavoritesProvider>
+            <CartProvider>
+              <AppContent>
+                {children}
+              </AppContent>
+              <Toaster />
+            </CartProvider>
+          </FavoritesProvider>
+        </AppStateProvider>
       </body>
     </html>
   );
