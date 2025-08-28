@@ -69,7 +69,7 @@ export default function ProfilePage() {
         <div className="container mx-auto px-4 py-8">
             <div className="flex flex-col items-center text-center space-y-4 mb-8">
                  <Avatar className="h-28 w-28 border-4 border-primary/20">
-                    <AvatarImage src={user?.photoURL || "https://picsum.photos/200"} alt={user?.displayName || 'User'} />
+                    <AvatarImage src={user?.photoURL || "https://picsum.photos/200"} alt={user?.displayName || 'User'} data-ai-hint="user avatar" />
                     <AvatarFallback>
                         {user?.displayName ? user.displayName.charAt(0) : <UserIcon className="h-12 w-12 text-muted-foreground" />}
                     </AvatarFallback>
