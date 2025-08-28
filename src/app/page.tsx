@@ -1,6 +1,6 @@
 
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ProductGrid } from '@/components/product-grid';
 import { products } from '@/lib/products';
 import { Input } from '@/components/ui/input';
@@ -10,13 +10,23 @@ import Image from 'next/image';
 import { Separator } from '@/components/ui/separator';
 import { useToast } from '@/hooks/use-toast';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { auth } from '@/lib/firebase';
+import { onAuthStateChanged, User } from 'firebase/auth';
 
 
 export default function Home() {
   const [address, setAddress] = useState('123 Main St...');
   const [fullAddress, setFullAddress] = useState('123 Main St, Anytown, USA');
   const [coordinates, setCoordinates] = useState<{lat: number, lon: number} | null>(null);
+  const [user, setUser] = useState<User | null>(null);
   const { toast } = useToast();
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+    return () => unsubscribe();
+  }, []);
 
   const handleLocationClick = () => {
     if (navigator.geolocation) {
@@ -89,6 +99,12 @@ export default function Home() {
   return (
     <div className="flex flex-col">
       <div className="container mx-auto px-4 py-6 space-y-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold">Welcome{user?.displayName ? `, ${user.displayName}` : ''}</h1>
+          </div>
+        </div>
+
         <div className="flex items-center justify-between">
             <Popover>
                 <PopoverTrigger asChild>
