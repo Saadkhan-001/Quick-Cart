@@ -105,6 +105,8 @@ export default function Home() {
           </div>
         </div>
 
+        <Separator />
+
         <div className="flex items-center justify-between">
             <Popover>
                 <PopoverTrigger asChild>
