@@ -2,9 +2,7 @@
 import { usePathname, useRouter } from 'next/navigation';
 import { useAppState } from '@/contexts/app-state-context';
 import { useEffect, useState } from 'react';
-import { Header } from '@/components/header';
 import { BottomNav } from '@/components/bottom-nav';
-import { products } from '@/lib/products';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { CreateProfileHeader } from '@/components/create-profile-header';
 
@@ -38,8 +36,7 @@ export default function AppContent({ children }: { children: React.ReactNode }) 
   return (
     <div className="relative flex min-h-screen flex-col">
       {showCreateProfileHeader && <CreateProfileHeader />}
-      {showNav && !isMobile && <Header />}
-      <main className={`flex-1 ${showNav || showCreateProfileHeader ? 'pb-16 md:pb-0' : ''}`}>
+      <main className={`flex-1 ${showNav ? 'pb-20 md:pb-0' : ''} ${showCreateProfileHeader ? 'pb-16 md:pb-0' : ''}`}>
         {children}
       </main>
       {showNav && <BottomNav />}
