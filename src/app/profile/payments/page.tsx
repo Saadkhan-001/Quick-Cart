@@ -10,7 +10,9 @@ import {
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuTrigger,
-  } from "@/components/ui/dropdown-menu"
+  } from "@/components/ui/dropdown-menu";
+import { Separator } from '@/components/ui/separator';
+import React from 'react';
 
 const paymentMethods = [
     { id: 'card-1', type: 'Credit Card', details: '**** **** **** 1234', icon: () => (
@@ -44,31 +46,34 @@ export default function SavedPaymentsPage() {
         <main className="flex-1">
           <div className="container mx-auto px-4 py-8">
             <RadioGroup defaultValue="card-1" className="space-y-4">
-                {paymentMethods.map((item) => {
+                {paymentMethods.map((item, index) => {
                     const Icon = item.icon;
                     return (
-                        <div key={item.id} className="flex items-center space-x-4 p-4 border rounded-lg">
-                             <div className="p-2 border rounded-md">
-                                <Icon />
+                       <React.Fragment key={item.id}>
+                            <div className="flex items-center space-x-4 p-4 border rounded-lg">
+                                <div className="p-2 border rounded-md">
+                                    <Icon />
+                                </div>
+                                <div className="flex-1">
+                                    <Label htmlFor={item.id} className="font-semibold text-base">{item.type}</Label>
+                                    <p className="text-muted-foreground text-sm">{item.details}</p>
+                                </div>
+                                <RadioGroupItem value={item.id} id={item.id} />
+                                <DropdownMenu>
+                                    <DropdownMenuTrigger asChild>
+                                        <Button variant="ghost" size="icon">
+                                            <MoreVertical className="h-5 w-5" />
+                                            <span className="sr-only">More options</span>
+                                        </Button>
+                                    </DropdownMenuTrigger>
+                                    <DropdownMenuContent>
+                                        <DropdownMenuItem>Edit</DropdownMenuItem>
+                                        <DropdownMenuItem className="text-destructive">Delete</DropdownMenuItem>
+                                    </DropdownMenuContent>
+                                </DropdownMenu>
                             </div>
-                            <div className="flex-1">
-                                <Label htmlFor={item.id} className="font-semibold text-base">{item.type}</Label>
-                                <p className="text-muted-foreground text-sm">{item.details}</p>
-                            </div>
-                            <RadioGroupItem value={item.id} id={item.id} />
-                            <DropdownMenu>
-                                <DropdownMenuTrigger asChild>
-                                    <Button variant="ghost" size="icon">
-                                        <MoreVertical className="h-5 w-5" />
-                                        <span className="sr-only">More options</span>
-                                    </Button>
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent>
-                                    <DropdownMenuItem>Edit</DropdownMenuItem>
-                                    <DropdownMenuItem className="text-destructive">Delete</DropdownMenuItem>
-                                </DropdownMenuContent>
-                            </DropdownMenu>
-                        </div>
+                            {index < paymentMethods.length - 1 && <Separator />}
+                        </React.Fragment>
                     )
                 })}
             </RadioGroup>

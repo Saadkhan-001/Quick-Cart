@@ -11,6 +11,8 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
   } from "@/components/ui/dropdown-menu"
+import { Separator } from '@/components/ui/separator';
+import React from 'react';
 
 const addresses = [
     { id: 'home', type: 'Home', address: '123 Elm Street, Apt 4B, Anytown, USA', icon: Home },
@@ -36,31 +38,34 @@ export default function SavedAddressesPage() {
         <main className="flex-1">
           <div className="container mx-auto px-4 py-8">
             <RadioGroup defaultValue="home" className="space-y-4">
-                {addresses.map((item) => {
+                {addresses.map((item, index) => {
                     const Icon = item.icon;
                     return (
-                        <div key={item.id} className="flex items-center space-x-4 p-4 border rounded-lg">
-                             <div className="p-3 bg-secondary rounded-lg">
-                                <Icon className="h-6 w-6 text-secondary-foreground" />
+                        <React.Fragment key={item.id}>
+                            <div className="flex items-center space-x-4 p-4 border rounded-lg">
+                                <div className="p-3 bg-secondary rounded-lg">
+                                    <Icon className="h-6 w-6 text-secondary-foreground" />
+                                </div>
+                                <div className="flex-1">
+                                    <Label htmlFor={item.id} className="font-semibold text-base">{item.type}</Label>
+                                    <p className="text-muted-foreground text-sm">{item.address}</p>
+                                </div>
+                                <RadioGroupItem value={item.id} id={item.id} />
+                                <DropdownMenu>
+                                    <DropdownMenuTrigger asChild>
+                                        <Button variant="ghost" size="icon">
+                                            <MoreVertical className="h-5 w-5" />
+                                            <span className="sr-only">More options</span>
+                                        </Button>
+                                    </DropdownMenuTrigger>
+                                    <DropdownMenuContent>
+                                        <DropdownMenuItem>Edit</DropdownMenuItem>
+                                        <DropdownMenuItem className="text-destructive">Delete</DropdownMenuItem>
+                                    </DropdownMenuContent>
+                                </DropdownMenu>
                             </div>
-                            <div className="flex-1">
-                                <Label htmlFor={item.id} className="font-semibold text-base">{item.type}</Label>
-                                <p className="text-muted-foreground text-sm">{item.address}</p>
-                            </div>
-                            <RadioGroupItem value={item.id} id={item.id} />
-                            <DropdownMenu>
-                                <DropdownMenuTrigger asChild>
-                                    <Button variant="ghost" size="icon">
-                                        <MoreVertical className="h-5 w-5" />
-                                        <span className="sr-only">More options</span>
-                                    </Button>
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent>
-                                    <DropdownMenuItem>Edit</DropdownMenuItem>
-                                    <DropdownMenuItem className="text-destructive">Delete</DropdownMenuItem>
-                                </DropdownMenuContent>
-                            </DropdownMenu>
-                        </div>
+                            {index < addresses.length - 1 && <Separator />}
+                        </React.Fragment>
                     )
                 })}
             </RadioGroup>
