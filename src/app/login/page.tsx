@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { auth } from '@/lib/firebase';
@@ -8,7 +8,8 @@ import {
   signInWithEmailAndPassword, 
   GoogleAuthProvider, 
   signInWithPopup,
-  getAdditionalUserInfo
+  getAdditionalUserInfo,
+  onAuthStateChanged
 } from 'firebase/auth';
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
@@ -20,6 +21,22 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const { toast } = useToast();
   const router = useRouter();
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // User is signed in.
+        const isNewUser = getAdditionalUserInfo(user.metadata)?.isNewUser;
+        if(isNewUser) {
+             router.push('/profile/create');
+        } else {
+             router.push('/');
+        }
+      }
+    });
+
+    return () => unsubscribe();
+  }, [router]);
 
   const handleAuthAction = async (e: React.FormEvent) => {
     e.preventDefault();

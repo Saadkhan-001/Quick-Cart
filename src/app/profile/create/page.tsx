@@ -9,6 +9,11 @@ import { useRouter } from 'next/navigation';
 
 export default function CreateProfilePage() {
   const router = useRouter();
+  
+  const handleSave = () => {
+    // Here you would typically save the profile data
+    router.push('/');
+  };
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-md bg-background">
@@ -36,7 +41,7 @@ export default function CreateProfilePage() {
         </div>
       </div>
       
-      <form className="space-y-6 mt-8">
+      <form onSubmit={(e) => { e.preventDefault(); handleSave(); }} className="space-y-6 mt-8">
           <div className="space-y-2">
             <Label htmlFor="fullname" className="sr-only">Full Name</Label>
             <Input id="fullname" placeholder="Full Name" className="h-12 bg-muted/50 border-0" />
@@ -49,7 +54,7 @@ export default function CreateProfilePage() {
             <Label htmlFor="address" className="sr-only">Address</Label>
             <Textarea id="address" placeholder="Address" className="min-h-[100px] bg-muted/50 border-0" />
           </div>
-          <Button className="w-full bg-accent text-accent-foreground hover:bg-accent/90" size="lg">Save & Continue</Button>
+          <Button type="submit" className="w-full bg-accent text-accent-foreground hover:bg-accent/90" size="lg">Save & Continue</Button>
       </form>
     </div>
   );
