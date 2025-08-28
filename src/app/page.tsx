@@ -24,14 +24,21 @@ export default function Home() {
               `https://nominatim.openstreetmap.org/reverse?format=json&lat=${position.coords.latitude}&lon=${position.coords.longitude}`
             );
             const data = await response.json();
-            if (data && data.display_name) {
-              setAddress(data.display_name);
-              toast({
-                title: 'Location Updated',
-                description: 'Your delivery address has been set.',
-              });
+            if (data && data.address) {
+                const city = data.address.city || data.address.town || data.address.village || data.display_name.split(',')[0];
+                setAddress(city);
+                toast({
+                    title: 'Location Updated',
+                    description: `Your delivery address has been set to: ${data.display_name}`,
+                });
+            } else if (data && data.display_name) {
+                setAddress(data.display_name.split(',')[0]);
+                toast({
+                    title: 'Location Updated',
+                    description: `Your delivery address has been set to: ${data.display_name}`,
+                });
             } else {
-              setAddress('Address not found');
+                setAddress('Address not found');
             }
           } catch (error) {
             console.error('Error fetching address:', error);
