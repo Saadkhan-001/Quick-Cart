@@ -17,10 +17,10 @@ const onboardingSlides = [
   },
   {
     image: {
-      src: 'https://picsum.photos/400/301',
+      src: 'https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
       hint: 'grocery variety',
     },
-    title: 'Wide Variety',
+    title: 'Shop from a wide variety of groceries',
     description: 'Choose from thousands of products across various categories.',
   },
   {
