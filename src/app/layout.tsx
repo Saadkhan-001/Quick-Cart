@@ -5,6 +5,7 @@ import { CartProvider } from '@/contexts/cart-context';
 import { FavoritesProvider } from '@/contexts/favorites-context';
 import { AppStateProvider } from '@/contexts/app-state-context';
 import AppContent from './app-content';
+import { ThemeProvider } from '@/components/theme-provider';
 
 export const metadata: Metadata = {
   title: 'Quick Cart',
@@ -17,23 +18,30 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="light">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet" />
       </head>
       <body className="font-body antialiased">
-        <AppStateProvider>
-          <FavoritesProvider>
-            <CartProvider>
-              <AppContent>
-                {children}
-              </AppContent>
-              <Toaster />
-            </CartProvider>
-          </FavoritesProvider>
-        </AppStateProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <AppStateProvider>
+            <FavoritesProvider>
+              <CartProvider>
+                <AppContent>
+                  {children}
+                </AppContent>
+                <Toaster />
+              </CartProvider>
+            </FavoritesProvider>
+          </AppStateProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

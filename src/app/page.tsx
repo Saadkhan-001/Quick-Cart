@@ -15,6 +15,7 @@ import { onAuthStateChanged, User } from 'firebase/auth';
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import React from 'react';
+import { ThemeToggle } from '@/components/theme-toggle';
 
 const notifications = [
     {
@@ -130,48 +131,52 @@ export default function Home() {
                 {user ? (
                     <div className="flex items-center justify-between w-full">
                         <h1 className="text-2xl font-bold">Welcome{user.displayName ? `, ${user.displayName}` : ''}</h1>
-                         <Popover>
-                            <PopoverTrigger asChild>
-                                <Button variant="ghost" size="icon">
-                                    <Bell />
-                                    <span className="sr-only">Notifications</span>
-                                </Button>
-                            </PopoverTrigger>
-                            <PopoverContent className="w-80" align="end">
-                                <div className="grid gap-4">
-                                <div className="space-y-2">
-                                    <h4 className="font-medium leading-none">Notifications</h4>
-                                    <p className="text-sm text-muted-foreground">
-                                    You have {notifications.length} new messages.
-                                    </p>
-                                </div>
-                                <div className="grid gap-2">
-                                    {notifications.map((notification, index) => {
-                                        const Icon = notification.icon;
-                                        return (
-                                        <React.Fragment key={notification.id}>
-                                            <div className="grid grid-cols-[25px_1fr] items-start pb-4 last:mb-0 last:pb-0">
-                                                <Icon className="h-5 w-5 text-primary" />
-                                                <div className="grid gap-1">
-                                                    <p className="text-sm font-medium leading-none">{notification.title}</p>
-                                                    <p className="text-sm text-muted-foreground">{notification.description}</p>
-                                                    <p className="text-xs text-muted-foreground mt-1">{notification.time}</p>
-                                                </div>
-                                            </div>
-                                            {index < notifications.length - 1 && <Separator />}
-                                        </React.Fragment>
-                                        )
-                                    })}
-                                </div>
-                                </div>
-                                <Button className="w-full mt-4" asChild>
-                                    <Link href="/notifications">View all notifications</Link>
-                                </Button>
-                            </PopoverContent>
-                        </Popover>
+                        <div className="flex items-center gap-2">
+                          <ThemeToggle />
+                          <Popover>
+                              <PopoverTrigger asChild>
+                                  <Button variant="ghost" size="icon">
+                                      <Bell />
+                                      <span className="sr-only">Notifications</span>
+                                  </Button>
+                              </PopoverTrigger>
+                              <PopoverContent className="w-80" align="end">
+                                  <div className="grid gap-4">
+                                  <div className="space-y-2">
+                                      <h4 className="font-medium leading-none">Notifications</h4>
+                                      <p className="text-sm text-muted-foreground">
+                                      You have {notifications.length} new messages.
+                                      </p>
+                                  </div>
+                                  <div className="grid gap-2">
+                                      {notifications.map((notification, index) => {
+                                          const Icon = notification.icon;
+                                          return (
+                                          <div key={notification.id}>
+                                              <div className="grid grid-cols-[25px_1fr] items-start pb-4 last:mb-0 last:pb-0">
+                                                  <Icon className="h-5 w-5 text-primary" />
+                                                  <div className="grid gap-1">
+                                                      <p className="text-sm font-medium leading-none">{notification.title}</p>
+                                                      <p className="text-sm text-muted-foreground">{notification.description}</p>
+                                                      <p className="text-xs text-muted-foreground mt-1">{notification.time}</p>
+                                                  </div>
+                                              </div>
+                                              {index < notifications.length - 1 && <Separator />}
+                                          </div>
+                                          )
+                                      })}
+                                  </div>
+                                  </div>
+                                  <Button className="w-full mt-4" asChild>
+                                      <Link href="/notifications">View all notifications</Link>
+                                  </Button>
+                              </PopoverContent>
+                          </Popover>
+                        </div>
                     </div>
                 ) : (
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 ml-auto">
+                        <ThemeToggle />
                         <Button asChild variant="outline">
                             <Link href="/login">Sign In</Link>
                         </Button>
