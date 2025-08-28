@@ -36,14 +36,19 @@ const onboardingSlides = [
 
 export default function OnboardingPage() {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [isAnimating, setIsAnimating] = useState(false);
   const router = useRouter();
 
   const handleNext = () => {
-    if (currentSlide < onboardingSlides.length - 1) {
-      setCurrentSlide(currentSlide + 1);
-    } else {
-      router.push('/login');
-    }
+    setIsAnimating(true);
+    setTimeout(() => {
+        if (currentSlide < onboardingSlides.length - 1) {
+          setCurrentSlide(currentSlide + 1);
+        } else {
+          router.push('/login');
+        }
+        setIsAnimating(false);
+    }, 500); // Animation duration
   };
 
   useEffect(() => {
@@ -51,7 +56,7 @@ export default function OnboardingPage() {
       handleNext();
     }, 5000);
 
-    return () => clearInterval(timer); // Cleanup the interval on component unmount or re-render
+    return () => clearInterval(timer);
   }, [currentSlide]);
 
 
@@ -65,7 +70,7 @@ export default function OnboardingPage() {
     <div className="flex flex-col h-screen bg-[#FAF8F1] relative">
        <Button variant="link" className="absolute top-4 right-4 z-10 text-muted-foreground" onClick={handleSkip}>Skip</Button>
       <div className="flex-1 flex flex-col items-center justify-center text-center px-6">
-        <div className="relative w-full max-w-sm aspect-[4/3] mb-8">
+        <div className={cn("relative w-full max-w-sm aspect-[4/3] mb-8 transition-opacity duration-500", isAnimating ? 'opacity-0' : 'opacity-100')}>
             <Image
                 src={image.src}
                 alt={title}
@@ -74,8 +79,10 @@ export default function OnboardingPage() {
                 data-ai-hint={image.hint}
             />
         </div>
-        <h2 className="text-3xl font-bold mb-4">{title}</h2>
-        <p className="text-muted-foreground max-w-sm">{description}</p>
+        <div className={cn("transition-opacity duration-500", isAnimating ? 'opacity-0' : 'opacity-100')}>
+            <h2 className="text-3xl font-bold mb-4">{title}</h2>
+            <p className="text-muted-foreground max-w-sm">{description}</p>
+        </div>
       </div>
       <div className="p-6 space-y-6">
         <div className="flex items-center justify-center space-x-2">
