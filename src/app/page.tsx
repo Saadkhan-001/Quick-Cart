@@ -99,7 +99,7 @@ export default function Home() {
 
   return (
     <div className="flex flex-col">
-      <div className="container mx-auto px-4 py-6 space-y-6">
+      <header className="container mx-auto px-4 py-6 space-y-6">
         <div className="flex items-center justify-between">
             {user ? (
                 <div>
@@ -157,7 +157,7 @@ export default function Home() {
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
           <Input placeholder="Search for products" className="pl-12 h-14 rounded-full bg-muted/50 border-0 focus-visible:ring-primary" />
         </div>
-      </div>
+      </header>
       
       <div className="container mx-auto px-4 my-4">
         <div className="relative aspect-video md:aspect-[2/1] lg:aspect-[2.4/1] w-full rounded-2xl overflow-hidden">
@@ -199,4 +199,3 @@ export default function Home() {
       </div>
     </div>
   );
-}
