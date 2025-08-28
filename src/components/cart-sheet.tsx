@@ -17,21 +17,38 @@ import {
 import { Separator } from '@/components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Badge } from './ui/badge';
+import { useIsMobile } from '@/hooks/use-mobile';
+import { cn } from '@/lib/utils';
 
 export function CartSheet() {
   const { cartItems, updateQuantity, removeFromCart, cartTotal, cartCount } = useCart();
+  const isMobile = useIsMobile();
+
+  const trigger = isMobile ? (
+    <SheetTrigger asChild>
+      <div className="relative">
+        <ShoppingCart className={cn('h-6 w-6', 'text-muted-foreground')} />
+        {cartCount > 0 && (
+          <Badge variant="destructive" className="absolute -right-2 -top-1 h-5 w-5 justify-center p-0 rounded-full">{cartCount}</Badge>
+        )}
+      </div>
+    </SheetTrigger>
+  ) : (
+    <SheetTrigger asChild>
+      <Button variant="outline" size="icon" className="relative">
+        <ShoppingCart className="h-5 w-5" />
+        {cartCount > 0 && (
+          <Badge variant="destructive" className="absolute -right-2 -top-2 h-5 w-5 justify-center p-0 rounded-full">{cartCount}</Badge>
+        )}
+        <span className="sr-only">Open Cart</span>
+      </Button>
+    </SheetTrigger>
+  );
+
 
   return (
     <Sheet>
-      <SheetTrigger asChild>
-        <Button variant="outline" size="icon" className="relative">
-          <ShoppingCart className="h-5 w-5" />
-          {cartCount > 0 && (
-             <Badge variant="destructive" className="absolute -right-2 -top-2 h-5 w-5 justify-center p-0 rounded-full">{cartCount}</Badge>
-          )}
-          <span className="sr-only">Open Cart</span>
-        </Button>
-      </SheetTrigger>
+      {trigger}
       <SheetContent className="flex w-full flex-col pr-0 sm:max-w-lg">
         <SheetHeader className="px-6">
           <SheetTitle>Shopping Cart ({cartCount})</SheetTitle>

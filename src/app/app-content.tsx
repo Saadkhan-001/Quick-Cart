@@ -5,12 +5,14 @@ import { useEffect, useState } from 'react';
 import { Header } from '@/components/header';
 import { BottomNav } from '@/components/bottom-nav';
 import { products } from '@/lib/products';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 export default function AppContent({ children }: { children: React.ReactNode }) {
   const { hasSeenWelcome } = useAppState();
   const router = useRouter();
   const pathname = usePathname();
   const [isInitial, setIsInitial] = useState(true);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     if (isInitial) {
@@ -32,7 +34,7 @@ export default function AppContent({ children }: { children: React.ReactNode }) 
 
   return (
     <div className="relative flex min-h-screen flex-col">
-      {showNav && <Header />}
+      {showNav && !isMobile && <Header />}
       <main className={`flex-1 ${showNav ? 'pb-16 md:pb-0' : ''}`}>
         {children}
       </main>
