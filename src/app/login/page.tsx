@@ -7,7 +7,8 @@ import {
   createUserWithEmailAndPassword, 
   signInWithEmailAndPassword, 
   GoogleAuthProvider, 
-  signInWithPopup 
+  signInWithPopup,
+  getAdditionalUserInfo
 } from 'firebase/auth';
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
@@ -50,12 +51,22 @@ export default function LoginPage() {
   const handleGoogleSignIn = async () => {
     const provider = new GoogleAuthProvider();
     try {
-      await signInWithPopup(auth, provider);
-      toast({
-        title: 'Signed In with Google',
-        description: 'Welcome!',
-      });
-      router.push('/');
+      const result = await signInWithPopup(auth, provider);
+      const additionalUserInfo = getAdditionalUserInfo(result);
+      
+      if (additionalUserInfo?.isNewUser) {
+        toast({
+            title: 'Account Created',
+            description: "Welcome! Let's get your profile set up.",
+        });
+        router.push('/profile/create');
+      } else {
+        toast({
+            title: 'Signed In with Google',
+            description: 'Welcome back!',
+        });
+        router.push('/');
+      }
     } catch (error: any) {
       toast({
         variant: 'destructive',
